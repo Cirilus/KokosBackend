@@ -4,7 +4,6 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-
 class PlayerSchema(BaseModel):
     id: uuid.UUID
 

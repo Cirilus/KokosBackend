@@ -1,21 +1,14 @@
-import uuid
-from datetime import datetime
-
-from sqlalchemy.orm import Mapped, mapped_column
-
-from models.BaseModel import EntityMeta
+from pydantic import BaseModel
 
 
-class User(EntityMeta):
-    __tablename__ = "user"
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    username: Mapped[str]
-    password: Mapped[str]
+class UserServiceListOpts(BaseModel):
+    username: str
+    limit: int
+    offset: int
 
-    email: Mapped[str] = mapped_column(nullable=True)
-    phone: Mapped[str] = mapped_column(nullable=True)
 
-    created_at: Mapped[datetime] = mapped_column(default=datetime.now, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(
-        default=datetime.now, onupdate=datetime.now, nullable=False
-    )
+class UserServiceCreateOpts(BaseModel):
+    username: str
+    password: str
+    email: str | None = None
+    phone: str | None = None

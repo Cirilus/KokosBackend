@@ -2,7 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Optional
 import uuid
 from models.news import News
+from models.user import User
 from schemas.news import NewsCreateRequest, NewsResponse
+from services.auth import authenticated
 from services.news import NewsService
 
 router = APIRouter(prefix="/api/v1/news", tags=["news"])
@@ -16,6 +18,7 @@ async def list(
     limit: Optional[int] = 100,
     offset: Optional[int] = 0,
     news_service: NewsService = Depends(),
+    _: User = Depends(authenticated),
 ):
     news_list = await news_service.list(limit, offset)
     return news_list
@@ -25,7 +28,11 @@ async def list(
     "/{news_id}",
     response_model=NewsResponse,
 )
-async def get(id: uuid.UUID, news_service: NewsService = Depends()):
+async def get(
+    id: uuid.UUID,
+    news_service: NewsService = Depends(),
+    _: User = Depends(authenticated),
+):
     news = await news_service.get(id)
     if not news:
         raise HTTPException(status_code=404, detail="News not found")
@@ -39,6 +46,7 @@ async def get(id: uuid.UUID, news_service: NewsService = Depends()):
 async def create(
     req: NewsCreateRequest,  # Assuming News Pydantic model is defined
     news_service: NewsService = Depends(),
+    _: User = Depends(authenticated),
 ):
     news = await news_service.create(
         News(
@@ -53,6 +61,10 @@ async def create(
     "/{id}",
     responses={200: {"msg": "successfully deleted"}},
 )
-async def delete(id: uuid.UUID, news_service: NewsService = Depends()):
+async def delete(
+    id: uuid.UUID,
+    news_service: NewsService = Depends(),
+    _: User = Depends(authenticated),
+):
     await news_service.delete(id)
     return {"msg": "successfully deleted"}

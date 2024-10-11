@@ -10,6 +10,7 @@ from errors.handlers import init_exception_handlers
 from routing.v1.match import router as match_router
 from routing.v1.news import router as news_router
 from routing.v1.player import router as player_router
+from routing.v1.auth import router as auth_router
 
 app = FastAPI(openapi_url="/core/openapi.json", docs_url="/core/docs")
 
@@ -32,3 +33,4 @@ if not env.DEBUG:
 app.include_router(match_router)
 app.include_router(news_router)
 app.include_router(player_router)
+app.include_router(auth_router)

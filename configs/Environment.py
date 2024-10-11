@@ -9,6 +9,9 @@ class EnvironmentSettings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_HOST: str
     POSTGRES_PORT: str
+
+    SECRET_KEY: str
+
     DEBUG: bool
 
     class Config:
