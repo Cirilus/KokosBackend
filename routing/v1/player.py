@@ -58,6 +58,9 @@ async def create(
             biography=req.biography,
             position=req.position,
             achievements=req.achievements,
+            height=req.height,
+            weight=req.weight,
+            games=req.games,
         )
     )
     return player

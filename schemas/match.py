@@ -14,3 +14,8 @@ class MatchSchema(BaseModel):
     result: str
 
     stadium: str
+
+class MatchListOpts(BaseModel):
+    limit: int
+    offset: int
+    from_date: datetime | None = None

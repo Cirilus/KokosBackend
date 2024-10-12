@@ -1,10 +1,12 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Optional
 import uuid
 
 from models.match import Match
 from models.user import User
-from schemas.match import MatchSchema
+from schemas.match import MatchSchema, MatchListOpts
 from services.auth import authenticated
 from services.match import MatchService
 
@@ -15,13 +17,15 @@ router = APIRouter(prefix="/api/v1/match", tags=["match"])
     "",
     response_model=List[MatchSchema],
 )
-async def get_matches(
+async def list(
     limit: Optional[int] = 100,
     offset: Optional[int] = 0,
+    from_date: datetime | None = None,
     match_service: MatchService = Depends(),
     _: User = Depends(authenticated),
 ):
-    matches = await match_service.list(limit, offset)
+    matches = await match_service.list(MatchListOpts(
+    limit=limit, offset=offset, from_date=from_date))
     return matches
 
 
@@ -29,7 +33,7 @@ async def get_matches(
     "/{match_id}",
     response_model=MatchSchema,
 )
-async def get_match_by_id(
+async def get(
     id: uuid.UUID,
     match_service: MatchService = Depends(),
     _: User = Depends(authenticated),
@@ -44,7 +48,7 @@ async def get_match_by_id(
     "",
     response_model=MatchSchema,
 )
-async def create_match(
+async def create(
     req: MatchSchema,  # Assuming MatchResponse Pydantic model is defined
     match_service: MatchService = Depends(),
     _: User = Depends(authenticated),
@@ -65,7 +69,7 @@ async def create_match(
     "/{id}",
     responses={200: {"msg": "successfully deleted"}},
 )
-async def delete_match(
+async def delete(
     id: uuid.UUID,
     match_service: MatchService = Depends(),
     _: User = Depends(authenticated),

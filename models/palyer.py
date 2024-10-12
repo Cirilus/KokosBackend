@@ -19,3 +19,8 @@ class Player(EntityMeta):
     biography: Mapped[str] = mapped_column(nullable=False)
     position: Mapped[str] = mapped_column(nullable=False)
     achievements: Mapped[str] = mapped_column(nullable=False)
+
+    height: Mapped[int] = mapped_column(nullable=False)
+    weight: Mapped[int] = mapped_column(nullable=False)
+
+    games: Mapped[str] = mapped_column(nullable=False)

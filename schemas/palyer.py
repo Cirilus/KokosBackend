@@ -16,3 +16,8 @@ class PlayerSchema(BaseModel):
     biography: str
     position: str
     achievements: str
+
+    height: int
+    weight: int
+
+    games: str
